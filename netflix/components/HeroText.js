@@ -1,10 +1,25 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useGlobalContext } from "./context/useGlobalContext";
 
 export const HeroText = () => {
+  const {
+    language,
+    emailPlaceholderText,
+    setEmailPlaceholderText,
+  } = useGlobalContext();
+
+  console.log(emailPlaceholderText);
+
+  const [
+    absoluteEmailAddressTextIsHidden,
+    setAbsoluteEmailAddressTextIsHidden,
+  ] = useState(true);
+  const [emailInputText, setEmailInputText] = useState("");
+  const emailInput = useRef("");
+
   const handleClick = (e) => {
     if (!e.target.className.includes("email-address-input")) {
       setAbsoluteEmailAddressTextIsHidden(true);
-      emailInput.current.placeholder = "Email address";
     }
   };
   useEffect(() => {
@@ -13,20 +28,23 @@ export const HeroText = () => {
       window.removeEventListener("click", handleClick);
     };
   }, []);
-  const [
-    absoluteEmailAddressTextIsHidden,
-    setAbsoluteEmailAddressTextIsHidden,
-  ] = useState(true);
-  const [emailInputText, setEmailInputText] = useState("");
-  const emailInput = useRef("");
+
   return (
     <div className="absolute left-1/3 top-56 z-20 w-5/6 text-white text-center max-w-3xl flex gap-4 flex-col ">
       <h1 className="text-7xl tracking-tighter">
-        Unlimited movies, TV shows, and more.
+        {language === "English"
+          ? "Unlimited movies, TV shows, and more."
+          : "Sınırsız film, dizi ve çok daha fazlası."}
       </h1>
-      <h2 className="text-3xl">Watch anywhere. Cancel anytime.</h2>
+      <h2 className="text-3xl">
+        {language === "English"
+          ? "Watch anywhere. Cancel anytime."
+          : "İstediğiniz yerde izleyin. İstediğiniz zaman iptal edin."}
+      </h2>
       <h5 className="text-xl mt-8">
-        Ready to watch? Enter your email to create or restart your membership.
+        {language === "English"
+          ? "Ready to watch? Enter your email to create or restart your membership."
+          : "İzlemeye hazır mısınız? Üyelik oluşturmak veya üyeliğinize erişmek için e‑posta adresinizi girin."}
       </h5>
       <div className="flex relative">
         <p
@@ -34,26 +52,26 @@ export const HeroText = () => {
             absoluteEmailAddressTextIsHidden ? "hidden" : null
           }`}
         >
-          Email address
+          {language === "English"?"Email address":"Eposta adresi"}
         </p>
         <input
           className="py-5 px-30 w-4/6 text-black email-address-input border-black border-r-2"
           style={{ textIndent: 15 }}
           ref={emailInput}
-          value={emailInput.current.value}
+          value={emailInputText}
           type="text"
           onClick={() => {
-            emailInput.current.placeholder = "";
+            setEmailPlaceholderText("");
             setAbsoluteEmailAddressTextIsHidden(false);
           }}
           onChange={(e) => {
             setEmailInputText(e.target.value);
           }}
-          placeholder="Email address"
+          placeholder={emailPlaceholderText}
         />
         <div className="inline-flex flex-row justify-start relative">
           <button className="px-10 py-4 bg-red-600 whitespace-nowrap text-2xl">
-            Get Started
+            {language === "English" ? "Get Started" : "Başlayın"}
           </button>
           <svg
             viewBox="0 0 6 12"

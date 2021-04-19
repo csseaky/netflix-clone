@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useGlobalContext } from "./context/useGlobalContext";
 
 export const Navbar = () => {
+  const { language, setLanguage, setEmailPlaceholderText } = useGlobalContext();
   return (
     <nav className="flex flex-row justify-around absolute top-5 z-10 w-full">
       <span className="mr-auto">
@@ -12,7 +14,19 @@ export const Navbar = () => {
           style={{ borderWidth: 1 }}
         >
           <GlobeIcon />
-          <select className="text-white">
+          <select
+            value={language}
+            className="text-white"
+            onChange={(e) => {
+              setLanguage(e.target.value);
+              if (e.target.value === "Turkish") {
+                setEmailPlaceholderText("Eposta adresi");
+              }
+              if (e.target.value === "English") {
+                setEmailPlaceholderText("Email address");
+              }
+            }}
+          >
             <option className="bg-gray-600">English</option>
             <option className="bg-gray-600">Turkish</option>
           </select>
